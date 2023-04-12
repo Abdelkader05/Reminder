@@ -4,13 +4,26 @@ import  random
 from PIL import ImageTk
 
 window = tkinter.Tk()
+window.configure()
+
 jeu = tkinter.Frame(window, background="cyan")
+
 score_total = 0
 score_manche = 0
+ancienne_image = ""
+liste_case = []
+
 score_label  = tkinter.Label(window, text="Tu as " + str(score_manche) + " point", font=("broadway", 40))
 score_label.pack()
-ancienne_image = ""
+
 image_gris = ImageTk.PhotoImage(file="image/gris.png")
+image_verifier = tkinter.PhotoImage(file="image/valide.png")
+
+liste_image = os.listdir("image/teste")
+for i in range(len(liste_image)):
+    image = ImageTk.PhotoImage(file=f"image/teste/{liste_image[i]}")
+    couple = (liste_image[i], image )
+    liste_image[i] = couple
 class case():
     def __init__(self,couple):
         self.couple = couple
@@ -47,26 +60,18 @@ class case():
                 score_total += 1
                 score_label.configure(text="Tu as " + str(score_total) + " point")
                 ancienne_image = ""
-                verif_win()
+                if score_manche == len(liste_image):
+                    verif_win()
             else :
                 ancienne_image.append(self)
 
 
-liste_image = os.listdir("image/teste")
-for i in range(len(liste_image)):
-    image = ImageTk.PhotoImage(file=f"image/teste/{liste_image[i]}")
-    couple = (liste_image[i], image )
-    liste_image[i] = couple
-
-liste_case = []
 def affiche(taille = 4):
-    global taille_
-    taille_ = taille
     try:
         assert taille >= 3
         assert taille < 10
         cpt = 0
-        copy = list.copy(liste_image)
+        copy = list(liste_image)
         copy = copy + copy
         random.shuffle(copy)
         colonne = 0
@@ -97,7 +102,7 @@ def affiche(taille = 4):
         erreur = tkinter.Label(jeu,text="choisir une taille plus grande", font=("broadway", 50), background="black", foreground="white" )
         erreur.pack()
 
-image_verifier = tkinter.PhotoImage(file="image/valide.png")
+
 def valider_case(liste: list):
     for element in liste:
         element.widjet.destroy()
@@ -105,11 +110,13 @@ def valider_case(liste: list):
         label.grid(column=element.colonne, row=element.ligne)
 def verif_win():
     global score_manche
-    if score_manche == len(liste_image):
-        for i in jeu.winfo_children():
-            i.destroy()
-            score_manche = 0
-            affiche(taille_)
+    for i in jeu.winfo_children():
+        i.destroy()
+        score_manche = 0
+    for instance in liste_case:
+        liste_case.remove(instance)
+        del instance
+    affiche(4)
 
 affiche(4)
 jeu.pack()
