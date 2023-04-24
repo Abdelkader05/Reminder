@@ -1,0 +1,64 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background: #84c5f4;
+}
+
+img{
+  width: 100px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  mix-blend-mode: color-burn;
+  -webkit-user-drag: none;
+}
+
+.memoryGame {
+  width: 80vw;
+  height: 75vh;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  perspective: 1000px;
+  -webkit-user-drag: none;
+}
+
+.carteMemory {
+/*   width: calc(10% - 10px); */
+/*   height: calc(15% - 10px); */
+  width: calc(25% - 10px);
+  height: calc(30% - 10px);
+  margin: 5px;
+  position: relative;
+  transform: scale(1);
+  transform-style: preserve-3d;
+  transition: transform .5s;
+}
+
+.carteMemory:active {
+  transform: scale(0.90);
+  transition: transform .01s;
+}
+
+.carteMemory.flip {
+  transform: rotateY(180deg);
+}
+
+.faceCachee, .faceDevoilee {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  position: absolute;
+  border-radius: 5px;
+  background: #ffffff;
+  backface-visibility: hidden;
+}
+
+.faceDevoilee {
+  transform: rotateY(180deg);
+}
